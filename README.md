@@ -191,3 +191,149 @@ If you use Browser Use in your research or project, please cite:
 <div align="center">
 Made with ❤️ in Zurich and San Francisco
  </div>
+
+# Browser-use com Tratamento Automático de Sessões
+
+Este projeto estende a ferramenta [Browser-use](https://github.com/browser-use/browser-use) para lidar automaticamente com problemas de sessão ao acessar serviços do Google e outros sites que exigem autenticação.
+
+## Funcionalidades
+
+- 🔄 **Tratamento automático de sessões expiradas** - Detecta e resolve problemas de sessão sem intervenção manual
+- 🤖 **Integração com modelos de IA** - Utiliza modelos como GPT-4o Mini via OpenRouter para automação inteligente e econômica
+- 🌐 **Suporte a múltiplos serviços Google** - Gmail, Drive, Docs, Sheets, etc.
+- 🔒 **Gestão segura de credenciais** - Armazena credenciais localmente no arquivo .env
+- ⏯️ **Controle de pausa** - Permite pausar a execução para intervenção manual quando necessário
+
+## Componentes Principais
+
+- **SessionHandler** (`session_handler.py`) - Monitora e resolve problemas de sessão
+- **GoogleSessionBrowser** (`google_session_browser.py`) - Navegador com tratamento automático de sessões do Google
+- **Interface Gráfica** (`google_session_ui.py`) - Interface gráfica com botão de pausa para execução de tarefas
+
+## Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/browser-use.git
+   cd browser-use
+   ```
+
+2. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   playwright install
+   ```
+
+3. Configure o arquivo `.env`:
+   ```
+   OPENROUTER_API_KEY=sua_chave_openrouter_aqui
+   GOOGLE_EMAIL=seu_email@gmail.com
+   GOOGLE_PASSWORD=sua_senha_aqui
+   ```
+
+## Uso
+
+### Interface Gráfica (Recomendado)
+
+Execute a interface gráfica:
+```bash
+python google_session_ui.py
+```
+
+A interface gráfica oferece:
+- Configuração fácil de credenciais e parâmetros
+- Seleção de modelos da OpenRouter, com destaque para o GPT-4o Mini
+- Botão de pausa para intervenção manual quando necessário
+- Visualização em tempo real do status da execução
+
+### Interface Gradio
+
+Execute a interface Gradio:
+```bash
+python run_gradio_ui.py
+```
+
+### Linha de Comando
+
+Execute o navegador com tratamento automático de sessões:
+```bash
+python google_session_browser.py
+```
+
+### Uso Programático
+
+```python
+import asyncio
+from google_session_browser import GoogleSessionBrowser
+
+async def main():
+    browser = GoogleSessionBrowser(
+        model="openai/gpt-4o-mini",  # Usando o modelo GPT-4o Mini (padrão)
+        headless=False
+    )
+    
+    try:
+        result = await browser.run("Acesse meus arquivos no Google Drive e liste os 5 mais recentes")
+        print(result)
+    finally:
+        await browser.close()
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+## Documentação
+
+- [Instruções para Tratamento de Sessões do Google](GOOGLE_SESSION_INSTRUCOES.md) - Guia detalhado sobre o tratamento automático de sessões
+- [Como Usar](COMO_USAR.md) - Guia geral de uso da ferramenta Browser-use
+
+## Modelos Suportados
+
+Nossa interface suporta os seguintes modelos da OpenRouter:
+
+| Modelo | Descrição | Recomendação |
+|--------|-----------|--------------|
+| **openai/gpt-4o-mini** | Versão mais leve e econômica do GPT-4o | ⭐ Recomendado para uso diário |
+| openai/gpt-4o | Modelo completo com excelente desempenho | Para tarefas complexas |
+| openai/gpt-4-turbo | Versão turbo do GPT-4 | Alternativa ao GPT-4o |
+| openai/gpt-3.5-turbo | Modelo mais econômico | Para tarefas simples |
+| anthropic/claude-3-opus | Modelo mais avançado da Anthropic | Para tarefas que exigem raciocínio avançado |
+| anthropic/claude-3-sonnet | Versão intermediária do Claude | Bom equilíbrio entre custo e desempenho |
+| anthropic/claude-3-haiku | Versão mais leve do Claude | Para tarefas simples |
+
+## Recursos Especiais
+
+### Botão de Pausa
+
+A interface gráfica inclui um botão de pausa que permite:
+1. **Pausar a execução** - Quando você precisa intervir manualmente
+2. **Continuar a execução** - Após realizar as alterações necessárias
+
+Este recurso é especialmente útil quando:
+- Você precisa resolver captchas manualmente
+- Precisa fazer login com verificação em duas etapas
+- Deseja ajustar algo na página antes de continuar
+
+### Detecção Inteligente de Sessões
+
+O sistema detecta automaticamente problemas de sessão através de:
+- Análise do conteúdo da página
+- Detecção de botões específicos como "Tentar novamente"
+- Monitoramento contínuo durante a execução
+
+## Segurança
+
+⚠️ **IMPORTANTE**: Este sistema requer suas credenciais do Google para funcionar. Para maior segurança:
+
+1. Use uma senha de aplicativo específica para o Google em vez de sua senha principal
+2. Nunca compartilhe seu arquivo `.env` ou suas credenciais
+3. Use este script apenas em dispositivos pessoais e seguros
+4. Considere criar uma conta Google separada para testes
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
+
+## Licença
+
+Este projeto é licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
